@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyleeaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Categories</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+<div class="text-center">
+<div class="text-center p-3 mb-2 bg-dark text-white">
+<div><h1>Departements <i
+							class="bi bi-clipboard-data-fill"></i></h1></div><br>
+</div>
+	<div class="container-fluid">
+	<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #007bff;">
+  <a class="navbar-brand" href="#"></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav">
+      <li class="nav-item active ">
+        <a class="nav-link" th:href="@{/index}" style="margin-left: 2px"><font color="white"><i class="bi bi-house-door-fill"></i> <strong>Home </strong></font></a>
+      </li>
+      <li class="nav-item ">
+        <a class="nav-link " th:href="@{/departements/new} "style="margin-left: 19px"><font color="white"><i class="bi bi-file-plus-fill"></i><strong> Ajouter un Departement</strong></font></a>
+      </li>
+      
+      
+    </ul>
+  </div>
+</nav>
+<br>
+<!-- 	<div class="p-2"> -->
+<!-- 	<a class=" p-2 h5" th:href="@{/}">Home</a><br><br> -->
+<!-- 		<a class="h5" th:href="@{/departements/new}">Create categories</a> -->
+<!-- 		</div> -->
+	
+	<table class="table table-bordered table-striped">
+		<thead class="table-light">
+			<th>ID</th>
+			<th>NAME</th>
+			<th>Action</th>
+		</thead>
+		<tbody>
+			<th:block th:each="departement : ${listDepartements}">
+				<tr>
+					<td>[[${departement.id}]]</td>
+					<td>[[${departement.name}]]</td>
+					<td>
+					<a class="btn btn-outline-secondary" th:href="@{'/departements/edit/' + ${departement.id}}">Edit</a>
+					&nbsp;
+					<a class="btn btn-outline-danger" th:href="@{'/departements/delete/' + ${departement.id}}">Delete</a></td>
+					
+				</tr>
+			</th:block>
+		</tbody>	
+	</table>
+	</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyleeaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Product Form</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+
+<div class="container text-center">
+<div th:if="${added}"><h1>Ajouter un module </h1></div>
+<div th:if="${edit}"><h1>Edit Module </h1></div>
+
+	<form th:action="@{/Modules/save}" th:object="${Module}" method="post"
+		style="max-width: 600px ;margin: 0 auto ">
+	<input type="hidden" th:field="*{id}" th:value="${Module.id}"/>	
+	<div class="m-3">
+		<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Nom Module</label>
+		
+		<div class="col-sm-8">
+			<input type="text" th:field="*{nomModule}" class="form-control" required />
+		</div>
+		
+		</div>
+
+		<br>
+		<div class="form-group row">
+		<label class="col-sm-4 col-form-label">Filiere</label>
+		
+		<div class="col-sm-8">
+			<select th:field="*{F}" class="form-select" required>
+			<th:block th:each="f1 : ${listFilieres}">
+			<option th:text="${f1.nomFiliere}" th:value="${f1.id}" />
+			</th:block>
+			</select>
+		</div>
+		</div>
+		
+		
+		
+		<div class="text-center p-3">
+			<button type="submit" class="btn btn-primary">Eregistrer</button>
+		</div>
+	</div>
+	
+	</form>
+
+</div>
+
+</body>
+</html>

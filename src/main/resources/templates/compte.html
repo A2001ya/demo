@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thyleeaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>List Categories</title>
+<link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
+<body>
+
+
+
+<div class="text-center">
+<div class="text-center p-3 mb-2 bg-dark text-white">
+<div><h1>Liste des comptes<i class="bi bi-person-square"></i></h1></div><br>
+
+</div>
+	<div class="container-fluid">
+<!-- 	<div class=" p-2"> -->
+<!-- 	    <a class=" p-2 h5" th:href="@{/}">Home</a><br><br> -->
+<!-- 		<a class="h5 p-2" th:href="@{/students/new}">Create New Student</a><br> -->
+<!-- 		<a th:href="@{/student/export/pdf}">Export to PDF</a><br> -->
+		
+		
+<!-- 		</div> -->
+		
+		<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #007bff;">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <a class="navbar-brand"  th:href="@{/index}" style="margin-left: 7px"><font color="white"><i class="bi bi-house-door-fill"></i><strong> Home</strong></font></a>
+
+  <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/comptes/new}"><font color="white"><i class="bi bi-person-plus-fill"></i><strong> Ajouter Un Compte</strong></font></a>
+      </li>
+      <!--<li class="nav-item">
+        <a class="nav-link" th:href="@{/compte/export/pdf}" style="margin-left: 7px"><font color="white"><strong> Télécharger en PDF</strong></font></a>
+      </li>-->
+      
+    </ul>
+    
+    	<div class="input-group mb-3" style="margin-top: 12px;">
+	
+<!--   <input type="text" class="form-control my-2 my-lg-0" style="margin-right: 10px;" placeholder="KeyWord" aria-label="KeyWord" aria-describedby="basic-addon2" required> -->
+  <div class="input-group-append" style="margin-left: 250px">
+ <form th:action="@{/compte/search}" style="margin-left: 300px">
+ <span class="input-group-addon"><font color="white"><strong></strong></font></span>
+  <input type="text" name="keyword" id="keyword" size="50" th:value="${keyword}" placeholder="Search" style="margin-left: 7px" required  />
+   
+    &nbsp;
+    <input class="btn btn-light" type="submit" value="Search" />
+    &nbsp;
+    <input class="btn btn-light" type="button" value="Clear" id="btnClear" onclick="clearSearch()" />
+</form>
+  </div>
+</div>
+    
+  </div>
+</nav>
+	<br>
+	<table class="table table-bordered table-striped">
+		<thead class="table-light">
+			<th>ID</th>
+			<th>username</th>
+			<th>Action</th>
+		</thead>
+		<tbody>
+			<th:block th:each="compte : ${listComptes}">
+				<tr>
+					<td>[[${compte.prof.id}]]</td>
+					<td>[[${compte.username}]]</td>
+					<td>
+					<a class="btn btn-outline-secondary" th:href="@{'/copmtes/edit/' + ${compte.password}}">Edit</a>
+					&nbsp;
+					<a class="btn btn-outline-danger" th:href="@{'/comptes/delete/' + ${compte.password}}">Delete</a>
+				</tr>
+			</th:block>
+		</tbody>	
+	</table>
+	
+
+
+	</div>
+</div>
+<script type="text/javascript">
+    function clearSearch() {
+        window.location = "[[@{/compte}]]";
+    }
+</script>
+</body>
+</html>
