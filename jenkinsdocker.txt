@@ -1,14 +1,19 @@
 pipeline {
     agent any
-
     stages {
-        stage('Build') {
+        stage('Build and push Docker image') {
             steps {
-                sh 'docker build -t ayabouchantouf/spring .'
-                 }
-             }
+                script {
+                    // Build the Docker image
+                    def dockerImage = docker.build("ayabouchantouf/spring")
 
-        
-       }
-    
+                    // Login to DockerHub
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
+                        // Push the Docker image to DockerHub
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+    }
 }
