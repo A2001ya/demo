@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build Docker image') {
             steps {
-                sh 'docker build -t ayabouchantouf/spring .'
+                sh 'docker build -t ayabouchantouf/spring docker/spring'
             }
         }
         stage('Push Docker image to DockerHub') {
