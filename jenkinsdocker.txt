@@ -3,7 +3,9 @@ pipeline {
     stages {
         stage('Build Docker image') {
             steps {
-                sh 'docker build -t ayabouchantouf/spring docker'
+                dir('docker') {
+                    sh 'docker build -t ayabouchantouf/spring .'
+                }
             }
         }
         stage('Push Docker image to DockerHub') {
@@ -14,11 +16,5 @@ pipeline {
                 }
             }
         }
-       stage('Deploy with Docker Compose') {
-  steps {
-    sh 'docker-compose up -d'
-  }
-}
-
     }
 }
