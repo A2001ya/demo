@@ -1,17 +1,16 @@
 pipeline {
     agent any
     stages {
-        stage('Build and push Docker image') {
+        stage('Build Docker image') {
             steps {
-                script {
-                    // Build the Docker image
-                    def dockerImage = docker.build("ayabouchantouf/spring")
-
-                    // Login to DockerHub
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                        // Push the Docker image to DockerHub
-                        dockerImage.push()
-                    }
+                sh 'docker build -t ayabouchantouf/spring .'
+            }
+        }
+        stage('Push Docker image to DockerHub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
+                    sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
+                    sh 'docker push ayabouchantouf/spring'
                 }
             }
         }
