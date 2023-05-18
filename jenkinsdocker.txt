@@ -4,35 +4,15 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Clone du code source depuis votre référentiel Git
-                git 'https://github.com/A2001ya/demo.git'
-
-                // Construction de l'image Docker
                 script {
-                    dockerImage = docker.build('ayabouchantouf/dockerimage', .)
-                }
-            }
-        }
+                    
+                    def imageName = "ayabouchantouf/dockerimage"
 
-        stage('Publish') {
-            steps {
-                // Connexion à DockerHub
-                withDockerRegistry([ url: 'https://hub.docker.com/repositories/ayabouchantouf']) {
-                    // Pousse de l'image vers DockerHub
-                    script {
-                        docker.withRegistry('', 'dockerhub-credentials') {
-                            dockerImage.push()
-                        }
-                    }
-                }
-            }
-        }
+                   
+                    sh "docker build -t ${imageName} ."
 
-        stage('Deploy') {
-            steps {
-                // Exécution de l'image Docker
-                script {
-                    docker.image('votre-utilisateur/nom-image:latest').run("-p 8080:8080")
+                    
+                    sh "docker push ${imageName}"
                 }
             }
         }
