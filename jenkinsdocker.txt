@@ -4,7 +4,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 dir('docker') {
-                    sh 'docker build -t ayabouchantouf/spring .'
+                    sh 'docker build -t ayabouchantouf/dockerimage .'
                 }
             }
         }
@@ -12,7 +12,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
                     sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
-                    sh 'docker push ayabouchantouf/spring'
+                    sh 'docker push ayabouchantouf/dockerimage'
                 }
             }
         }
