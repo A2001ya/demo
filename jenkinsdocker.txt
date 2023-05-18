@@ -1,26 +1,40 @@
 pipeline {
     agent any
-    stages {
-        stage('Build Docker image') {
-            steps {
-                dir('docker') {
-                    sh 'docker build -t ayabouchantouf/dockerimage .'
-                }
-            }
-        }
-        stage('Push Docker image to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'DOCKERHUB_USERNAME', passwordVariable: 'DOCKERHUB_PASSWORD')]) {
-                    sh 'docker login -u $DOCKERHUB_USERNAME -p $DOCKERHUB_PASSWORD'
-                    sh 'docker push ayabouchantouf/dockerimage'
-                }
-            }
-        }
-      stage('Deploy with Docker Compose') {
-  steps {
-    sh 'docker-compose up -d'
-  }
-}
 
+    stages {
+        stage('Build') {
+            steps {
+                // Clone du code source depuis votre référentiel Git
+                git 'https://github.com/A2001ya/demo.git'
+
+                // Construction de l'image Docker
+                script {
+                    dockerImage = docker.build('ayabouchantouf/dockerimage', .)
+                }
+            }
+        }
+
+        stage('Publish') {
+            steps {
+                // Connexion à DockerHub
+                withDockerRegistry([ url: 'https://hub.docker.com/repositories/ayabouchantouf']) {
+                    // Pousse de l'image vers DockerHub
+                    script {
+                        docker.withRegistry('', 'dockerhub-credentials') {
+                            dockerImage.push()
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                // Exécution de l'image Docker
+                script {
+                    docker.image('votre-utilisateur/nom-image:latest').run("-p 8080:8080")
+                }
+            }
+        }
     }
 }
