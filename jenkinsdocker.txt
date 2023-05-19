@@ -2,18 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                script {
-                    
-                    def imageName = "ayabouchantouf/dockerimage"
-
-                   
-                    sh "docker build -t ${imageName} ."
-
-                    
-                    sh "docker push ${imageName}"
+                sh 'docker build -t ayaboiuchantouf/dockerimage .'
+            }
+        }
+        
+        stage('Push to Docker Hub') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo ${DOCKER_PASSWORD} | docker login --username=${DOCKER_USERNAME} --password-stdin"
+                    sh 'docker push ayaboiuchantouf/dockerimage'
                 }
+            }
+        }
+
+        stage('Run Application with Docker Compose') {
+            steps {
+                sh 'docker-compose up'
             }
         }
     }
