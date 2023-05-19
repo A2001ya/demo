@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t ayaboiuchantouf/dockerimage .'
+                sh 'docker build -t ayaboiuchantouf/dockerimage.txt .'
             }
         }
         
@@ -12,7 +12,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
                     sh "echo ${DOCKER_PASSWORD} | docker login --username=${DOCKER_USERNAME} --password-stdin"
-                    sh 'docker push ayaboiuchantouf/dockerimage'
+                    sh 'docker push ayaboiuchantouf/dockerimage.txt'
                 }
             }
         }
