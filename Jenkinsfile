@@ -2,19 +2,24 @@ pipeline {
     agent any
 
     stages {
-        stage('Build') {
+        stage('Build Docker Image') {
             steps {
-                echo 'Building..'
+                sh 'docker build -t ayaboiuchantouf/dockerimage .'
             }
         }
-        stage('Test') {
+        
+        stage('Push to Docker Hub') {
             steps {
-                echo 'Testing..'
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "echo ${DOCKER_PASSWORD} | docker login --username=${DOCKER_USERNAME} --password-stdin"
+                    sh 'docker push ayaboiuchantouf/dockerimage'
+                }
             }
         }
-        stage('Deploy') {
+
+        stage('Run Application with Docker Compose') {
             steps {
-                echo 'Deploying....'
+                sh 'docker-compose up'
             }
         }
     }
